@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <mat-card>
+        <form class="example-form" (submit)="onAddSchool(addSchoolForm)" #addSchoolForm="ngForm">
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field class="example-full-width">
+                <mat-label>Name of School</mat-label>
+                <input matInput name="schoolName" ngModel #schoolNameInput="ngModel" required>
+                <mat-error *ngIf="schoolNameInput.invalid">Please enter a valid school name.</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field class="example-full-width">
+                <mat-label>City</mat-label>
+                <input matInput name="city" ngModel #city="ngModel" required>
+                <mat-error *ngIf="city.invalid">Please enter a valid city name.</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <hr>
+          <div class="container">
+            <div class="row">
+              <button style="margin: auto;" type="submit" class="btn btn-success btn-block">Submit</button>
+            </div>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

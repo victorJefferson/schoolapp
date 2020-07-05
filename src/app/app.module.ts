@@ -1,14 +1,37 @@
+import { AppRoutingModule } from './app-routing.module';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatInputModule } from '@angular/material/input';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HeaderComponent } from './header/header.component';
+import { ViewSchoolsComponent } from './schools/view-schools/view-schools.component';
+import { AddSchoolComponent } from './schools/add-school/add-school.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    ViewSchoolsComponent,
+    AddSchoolComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
+    MatExpansionModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]
