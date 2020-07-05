@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { AvatarModule } from 'ngx-avatar';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +14,7 @@ import { HeaderComponent } from './header/header.component';
 import { ViewSchoolsComponent } from './schools/view-schools/view-schools.component';
 import { AddSchoolComponent } from './schools/add-school/add-school.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatCardModule,
     MatExpansionModule,
-    MatInputModule
+    MatInputModule,
+    AvatarModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
