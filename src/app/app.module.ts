@@ -15,13 +15,23 @@ import { ViewSchoolsComponent } from './schools/view-schools/view-schools.compon
 import { AddSchoolComponent } from './schools/add-school/add-school.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { AddUserComponent } from './main-user/add-user/add-user.component';
+import { UserComponent } from './main-user/user/user.component';
+import { ViewUsersComponent } from './main-user/view-users/view-users.component';
+import { NamifyPipe } from './pipes/namify.pipe';
+import { InitializePipe } from './pipes/initialize.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     ViewSchoolsComponent,
-    AddSchoolComponent
+    AddSchoolComponent,
+    AddUserComponent,
+    UserComponent,
+    ViewUsersComponent,
+    InitializePipe,
+    NamifyPipe
   ],
   imports: [
     BrowserModule,

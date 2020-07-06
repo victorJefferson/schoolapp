@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Add User</h5>
+        </div>
+        <div class="card-body">
+          <form class="example-form" (submit)="onAddUser(addUserForm)" #addUserForm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Name of User</mat-label>
+                  <input matInput name="username" ngModel #username="ngModel" required>
+                  <mat-error *ngIf="username.invalid">Please enter a valid school name.</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Email ID</mat-label>
+                  <input matInput name="email" ngModel #email="ngModel" required email>
+                  <mat-error *ngIf="email.invalid">Please enter a valid email.</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Role</mat-label>
+                    <select matNativeControl name="role" ngModel #role="ngModel" required>
+                      <option value="admin">Admin</option>
+                      <option value="staff">Staff</option>
+                      <option value="student">Student</option>
+                      <option value="parent">Parent</option>
+                    </select>
+                    <mat-error *ngIf="role.invalid">Please select a valid role.</mat-error>
+                  </mat-form-field>
+              </div>
+            </div>
+            <hr>
+            <div class="container">
+              <div class="row">
+                <button style="margin: auto;" type="submit" class="btn btn-success btn-block">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
