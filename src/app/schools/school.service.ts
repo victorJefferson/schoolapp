@@ -1,3 +1,4 @@
+import { User } from './../main-user/user.model';
 import { Injectable } from '@angular/core';
 import { School } from './school.model';
 import { Subject } from 'rxjs';
@@ -8,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class SchoolService {
   private schools: School[] = [];
+  private users: User[];
   schoolsSub = new Subject<School[]>();
   private schoolToEdit: School;
 

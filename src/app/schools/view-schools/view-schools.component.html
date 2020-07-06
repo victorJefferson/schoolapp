@@ -59,7 +59,9 @@
               <div class="col-6">
                 <mat-form-field class="example-full-width">
                   <mat-label>Admin</mat-label>
-                  <input matInput name="admin" formControlName="admin">
+                  <select matNativeControl name="role" formControlName="admin">
+                    <option *ngFor="let user of users" value="{{ user.userId }}">{{ user.name }}</option>
+                  </select>
                 </mat-form-field>
               </div>
             </div>
