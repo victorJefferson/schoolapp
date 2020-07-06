@@ -27,7 +27,7 @@
           <p>Location: {{ selecetedSchool.city }}</p>
           <hr>
           <p *ngIf="!selecetedSchool.admin">This School isn't assigned an Admin.</p>
-          <p *ngIf="selecetedSchool.admin">Administered by: {{ selecetedSchool.admin }}</p>
+          <p *ngIf="selecetedSchool.admin">Administered by: {{ selecetedSchool.admin | namify }}</p>
         </div>
       </div>
     </div>
