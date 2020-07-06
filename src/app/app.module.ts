@@ -1,4 +1,3 @@
-import { InitializePipe } from './pipes/initialize.pipe';
 import { AppRoutingModule } from './app-routing.module';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +19,7 @@ import { AddUserComponent } from './main-user/add-user/add-user.component';
 import { UserComponent } from './main-user/user/user.component';
 import { ViewUsersComponent } from './main-user/view-users/view-users.component';
 import { NamifyPipe } from './pipes/namify.pipe';
+import { InitializePipe } from './pipes/initialize.pipe';
 
 @NgModule({
   declarations: [
