@@ -26,7 +26,11 @@
         <div class="card-body">
           <p>Location: {{ selecetedSchool.city }}</p>
           <hr>
-          <p *ngIf="!selecetedSchool.admin">This School isn't assigned an Admin.</p>
+          <div>
+            <p class="float-left" *ngIf="!selecetedSchool.admin">This School isn't assigned an Admin.</p>
+            <button class="btn btn-primary btn-sm float-right" (click)="onEditSchool(selecetedSchool.schoolId)"
+            *ngIf="!selecetedSchool.admin">Assign Admin</button>
+          </div>
           <p *ngIf="selecetedSchool.admin">Administered by: {{ selecetedSchool.admin | namify }}</p>
         </div>
       </div>
