@@ -15,13 +15,15 @@ import { ViewSchoolsComponent } from './schools/view-schools/view-schools.compon
 import { AddSchoolComponent } from './schools/add-school/add-school.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     ViewSchoolsComponent,
-    AddSchoolComponent
+    AddSchoolComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
