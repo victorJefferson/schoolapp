@@ -15,7 +15,9 @@ import { ViewSchoolsComponent } from './schools/view-schools/view-schools.compon
 import { AddSchoolComponent } from './schools/add-school/add-school.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { UserComponent } from './user/user.component';
+import { AddUserComponent } from './main-user/add-user/add-user.component';
+import { UserComponent } from './main-user/user/user.component';
+import { ViewUsersComponent } from './main-user/view-users/view-users.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { UserComponent } from './user/user.component';
     HeaderComponent,
     ViewSchoolsComponent,
     AddSchoolComponent,
-    UserComponent
+    AddUserComponent,
+    UserComponent,
+    ViewUsersComponent
   ],
   imports: [
     BrowserModule,

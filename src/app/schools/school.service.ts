@@ -23,13 +23,8 @@ export class SchoolService {
     this.schoolsSub.next([...this.schools]);
   }
 
-  getSchools(){
-    this.emitNextSchoolsValue();
-  }
-
   addSchool(schoolName: string, city: string){
-    let id = this.schools.length + 1;
-    let schoolId = "s" + id;
+    let schoolId = this.generateSchoolId();
     this.schools.push({schoolId: schoolId, name: schoolName, city: city, admin: null});
     this.emitNextSchoolsValue();
     this.router.navigate(['/']);
@@ -45,5 +40,11 @@ export class SchoolService {
       admin: admin
     }
     this.emitNextSchoolsValue();
+  }
+
+  generateSchoolId(){
+    let id = this.schools.length + 1;
+    let schoolId = "s" + id;
+    return schoolId;
   }
 }
