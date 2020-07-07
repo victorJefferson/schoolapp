@@ -22,6 +22,7 @@ import { NamifyPipe } from './pipes/namify.pipe';
 import { InitializePipe } from './pipes/initialize.pipe';
 import { ViewSchoolComponent } from './schools/view-school/view-school.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { SchoolSidenavComponent } from './schools/school-sidenav/school-sidenav.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     InitializePipe,
     NamifyPipe,
     ViewSchoolComponent,
-    SidenavComponent
+    SidenavComponent,
+    SchoolSidenavComponent
   ],
   imports: [
     BrowserModule,
