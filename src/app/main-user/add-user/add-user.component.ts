@@ -18,7 +18,8 @@ export class AddUserComponent implements OnInit {
     if(form.invalid){
       return;
     }
-    this.userService.addUser(form.value.username, form.value.email, form.value.role)
+    this.userService.addUser(form.value.username, form.value.email, form.value.role);
+    form.reset();
   }
 
 }

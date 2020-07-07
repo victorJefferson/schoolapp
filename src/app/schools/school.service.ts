@@ -1,3 +1,4 @@
+import { UserService } from './../main-user/user.service';
 import { User } from './../main-user/user.model';
 import { Injectable } from '@angular/core';
 import { School } from './school.model';
@@ -14,7 +15,7 @@ export class SchoolService {
   private schoolToEdit: School;
   private selectedSchoolId: string;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
     this.schools.push({schoolId: "s1", name: "NPS", city: "Namchi", admin: null});
     this.schools.push({schoolId: "s2", name: "Velammal", city: "Chennai", admin: null});
   }
@@ -43,6 +44,7 @@ export class SchoolService {
       admin: admin
     }
     this.emitNextSchoolsValue();
+    this.userService.assignSchoolToUser(admin, schoolId);
   }
 
   selectSchool(selectSchoolId: string){

@@ -1,8 +1,10 @@
+import { UserService } from './../../main-user/user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { School } from '../school.model';
 import { Subscription } from 'rxjs';
 import { SchoolService } from '../school.service';
 import { ActivatedRoute } from '@angular/router';
+import { User } from 'src/app/main-user/user.model';
 
 @Component({
   selector: 'app-staff-management',
@@ -14,8 +16,14 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   selectedSchool: School;
   schools: School[] = [];
   schoolsSubs: Subscription;
+  staffsSubs: Subscription;
+  staffs: User[] = [];
 
-  constructor(private schoolService: SchoolService, private route: ActivatedRoute) { }
+  constructor(
+    private schoolService: SchoolService,
+    private userService: UserService,
+    private route: ActivatedRoute
+    ) { }
 
   ngOnInit(){
     this.route.params.subscribe(params => {
@@ -26,9 +34,28 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     });
     this.schools = this.schoolService.initSchools();
     this.selectedSchool = this.schools.find(e => e.schoolId === this.selectedSchoolId);
+    this.schools = this.schoolService.initSchools();
+    this.staffsSubs = this.userService.usersSubj.subscribe(
+      (users) => {
+        this.getStaffsNotAssignedToSchool(users);
+      }
+    )
+    let initUsers = this.userService.initUsers();
+    this.getStaffsNotAssignedToSchool(initUsers);
+  }
+
+  getStaffsNotAssignedToSchool(initUsers: User[]){
+    this.staffs = [];
+    let i;
+    for (i = 0; i < initUsers.length; i++){
+      if(initUsers[i].role == "staff" && initUsers[i].schoolId == null){
+        this.staffs.push(initUsers[i]);
+      }
+    }
   }
 
   ngOnDestroy(){
     this.schoolsSubs.unsubscribe();
+    this.staffsSubs.unsubscribe();
   }
 }

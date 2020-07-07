@@ -33,11 +33,11 @@ export class ViewSchoolsComponent implements OnInit, OnDestroy {
     this.schools = this.schoolService.initSchools();
     this.userSubs = this.userService.usersSubj.subscribe(
       (users) => {
-        this.getAdminUsers(users);
+        this.getAdminUsersNotAssignedToSchools(users);
       }
     )
     let initUsers = this.userService.initUsers();
-    this.getAdminUsers(initUsers);
+    this.getAdminUsersNotAssignedToSchools(initUsers);
   }
 
   onSelectSchool(schoolId: string){
@@ -70,13 +70,15 @@ export class ViewSchoolsComponent implements OnInit, OnDestroy {
         this.editSchoolForm.value.admin
       )
       this.editSchoolMode = false;
+      this.editSchoolForm.reset();
     }
   }
 
-  getAdminUsers(initUsers: User[]){
+  getAdminUsersNotAssignedToSchools(initUsers: User[]){
+    this.users = [];
     let i;
     for (i = 0; i < initUsers.length; i++){
-      if(initUsers[i].role == "admin"){
+      if(initUsers[i].role == "admin" && initUsers[i].schoolId == null){
         this.users.push(initUsers[i]);
       }
     }

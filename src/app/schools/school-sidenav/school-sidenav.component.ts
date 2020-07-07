@@ -14,7 +14,6 @@ export class SchoolSidenavComponent implements OnInit {
   ngOnInit(){
     this.route.params.subscribe(params => {
       this.selectedSchoolId = params["schoolId"];
-      console.log(this.selectedSchoolId);
     })
   }
 

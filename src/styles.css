@@ -57,6 +57,11 @@ ngx-avatar{
   transition: 200ms;
 }
 
+.active{
+  background-color: #3F51B5!important;
+  border: none!important;
+}
+
 .simulate-link:hover{
   color: black;
 }
