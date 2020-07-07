@@ -21,6 +21,7 @@ import { ViewUsersComponent } from './main-user/view-users/view-users.component'
 import { NamifyPipe } from './pipes/namify.pipe';
 import { InitializePipe } from './pipes/initialize.pipe';
 import { ViewSchoolComponent } from './schools/view-school/view-school.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ViewSchoolComponent } from './schools/view-school/view-school.component
     ViewUsersComponent,
     InitializePipe,
     NamifyPipe,
-    ViewSchoolComponent
+    ViewSchoolComponent,
+    SidenavComponent
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,10 @@
   </div>
   <hr>
   <div class="row">
-    <div [ngClass]="(viewSchoolMode || editSchoolMode)?'col-6':'col-12'">
+    <div class="col-3">
+      <app-sidenav></app-sidenav>
+    </div>
+    <div [ngClass]="(viewSchoolMode || editSchoolMode)?'col-5':'col-9'">
       <div class="list-group">
         <div class="list-group-item" *ngFor="let school of schools" >
           <div class="float-left">
@@ -25,7 +28,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6" *ngIf="viewSchoolMode">
+    <div class="col-4" *ngIf="viewSchoolMode">
       <div class="card">
         <div class="card-header">
           <span class="float-left">{{ selecetedSchool.name }}</span>
@@ -47,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6" *ngIf="editSchoolMode">
+    <div class="col-4" *ngIf="editSchoolMode">
       <div class="card">
         <div class="card-header">
           <span class="float-left">{{ selecetedSchool.name }} - Edit Mode</span>
