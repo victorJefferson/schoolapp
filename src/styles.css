@@ -50,3 +50,14 @@ ngx-avatar{
   font-size: 13px;
   height: 40px;
 }
+
+.simulate-link{
+  color: blue;
+  cursor: pointer!important;
+  transition: 200ms;
+}
+
+.simulate-link:hover{
+  color: black;
+}
+

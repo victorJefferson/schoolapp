@@ -17,7 +17,7 @@
       <div class="list-group">
         <div class="list-group-item" *ngFor="let school of schools" >
           <div class="float-left">
-            <a routerLink="/viewSchool/{{school.schoolId}}">{{ school.name }}</a>
+            <p class="simulate-link" (click)="selectSchool(school.schoolId)">{{ school.name }}</p>
           </div>
           <div class="float-right">
             <div class="btn-group" role="group" aria-label="Basic example">

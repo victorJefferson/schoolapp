@@ -82,6 +82,10 @@ export class ViewSchoolsComponent implements OnInit, OnDestroy {
     }
   }
 
+  selectSchool(selectSchoolId: string){
+    this.schoolService.selectSchool(selectSchoolId);
+  }
+
   disableViewMode(){
     this.viewSchoolMode = false;
   }

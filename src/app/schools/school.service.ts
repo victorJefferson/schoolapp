@@ -12,6 +12,7 @@ export class SchoolService {
   private users: User[];
   schoolsSub = new Subject<School[]>();
   private schoolToEdit: School;
+  private selectedSchoolId: string;
 
   constructor(private router: Router) {
     this.schools.push({schoolId: "s1", name: "NPS", city: "Namchi", admin: null});
@@ -42,6 +43,19 @@ export class SchoolService {
       admin: admin
     }
     this.emitNextSchoolsValue();
+  }
+
+  selectSchool(selectSchoolId: string){
+    this.selectedSchoolId = selectSchoolId;
+    this.router.navigate(["/viewSchool",this.selectedSchoolId]);
+  }
+
+  setSelectedSchoolId(schoolId: string){
+    this.selectedSchoolId = schoolId;
+  }
+
+  getSelectedSchoolId(){
+    return this.selectedSchoolId;
   }
 
   generateSchoolId(){

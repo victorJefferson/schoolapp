@@ -1,3 +1,4 @@
+import { StaffManagementComponent } from './schools/staff-management/staff-management.component';
 import { ViewSchoolComponent } from './schools/view-school/view-school.component';
 import { UserComponent } from './main-user/user/user.component';
 import { AddSchoolComponent } from './schools/add-school/add-school.component';
@@ -9,7 +10,8 @@ const routes: Routes = [
   { path: '', component: ViewSchoolsComponent },
   { path: 'addSchool', component: AddSchoolComponent },
   { path: 'user', component: UserComponent },
-  { path: 'viewSchool/:schoolId', component: ViewSchoolComponent }
+  { path: 'viewSchool/:schoolId', component: ViewSchoolComponent },
+  { path: 'viewSchool/staffManagement/:schoolId', component: StaffManagementComponent }
 ]
 
 

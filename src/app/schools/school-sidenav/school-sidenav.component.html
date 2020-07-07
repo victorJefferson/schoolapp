@@ -1,7 +1,12 @@
 <div class="list-group">
-  <a href="#" class="list-group-item list-group-item-action active">Dashboard</a>
-  <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-  <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-  <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-  <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+  <a routerLink="/viewSchool/{{selectedSchoolId}}" routerLinkActive="active"
+  [routerLinkActiveOptions]="{ exact: true }" class="list-group-item list-group-item-action">Dashboard</a>
+  <a routerLink="/viewSchool/staffManagement/{{selectedSchoolId}}" routerLinkActive="active"
+  class="list-group-item list-group-item-action">Staff Management</a>
+  <a class="list-group-item list-group-item-action">Student Management</a>
+  <a class="list-group-item list-group-item-action">Progress Report</a>
+  <a class="list-group-item list-group-item-action">Evaluations</a>
+  <a class="list-group-item list-group-item-action">My Communications</a>
+  <a class="list-group-item list-group-item-action">My Calendar</a>
+  <a class="list-group-item list-group-item-action">Transportation</a>
 </div>
