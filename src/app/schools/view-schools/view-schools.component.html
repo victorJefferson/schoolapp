@@ -1,12 +1,24 @@
 <div class="container">
   <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>My Schools</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
     <div [ngClass]="(viewSchoolMode || editSchoolMode)?'col-6':'col-12'">
       <div class="list-group">
-        <div class="list-group-item clickable" *ngFor="let school of schools" >
-          <div class="float-left">{{ school.name }}</div>
+        <div class="list-group-item" *ngFor="let school of schools" >
+          <div class="float-left">
+            <a routerLink="/viewSchool/{{school.schoolId}}">{{ school.name }}</a>
+          </div>
           <div class="float-right">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button (click)="onSelectSchool(school.schoolId)" type="button" class="btn btn-sm btn-primary">View</button>
+              <button (click)="onSelectSchool(school.schoolId)" type="button" class="btn btn-sm btn-primary">Details</button>
               <button (click)="onEditSchool(school.schoolId)"type="button" class="btn btn-sm btn-warning">Edit</button>
             </div>
           </div>

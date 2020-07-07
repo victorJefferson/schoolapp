@@ -20,6 +20,7 @@ import { UserComponent } from './main-user/user/user.component';
 import { ViewUsersComponent } from './main-user/view-users/view-users.component';
 import { NamifyPipe } from './pipes/namify.pipe';
 import { InitializePipe } from './pipes/initialize.pipe';
+import { ViewSchoolComponent } from './schools/view-school/view-school.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { InitializePipe } from './pipes/initialize.pipe';
     UserComponent,
     ViewUsersComponent,
     InitializePipe,
-    NamifyPipe
+    NamifyPipe,
+    ViewSchoolComponent
   ],
   imports: [
     BrowserModule,
