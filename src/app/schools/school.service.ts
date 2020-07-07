@@ -45,6 +45,7 @@ export class SchoolService {
     }
     this.emitNextSchoolsValue();
     this.userService.assignSchoolToUser(admin, schoolId);
+    this.userService.assignDesignationToUser(admin, "admin");
   }
 
   selectSchool(selectSchoolId: string){

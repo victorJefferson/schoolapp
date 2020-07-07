@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 import { UserService } from './../../main-user/user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { School } from '../school.model';
@@ -52,6 +53,16 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
         this.staffs.push(initUsers[i]);
       }
     }
+  }
+
+  onAddStaff(form: NgForm){
+    if (form.invalid){
+      return;
+    }
+    let userId = this.userService.addUser(form.value.staffName, form.value.email, "staff");
+    this.userService.assignSchoolToUser(userId, this.selectedSchoolId);
+    this.userService.assignDesignationToUser(userId, form.value.designation);
+    form.resetForm();
   }
 
   ngOnDestroy(){

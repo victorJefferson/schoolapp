@@ -57,7 +57,7 @@ ngx-avatar{
   transition: 200ms;
 }
 
-.active{
+.list-group-item.active{
   background-color: #3F51B5!important;
   border: none!important;
 }

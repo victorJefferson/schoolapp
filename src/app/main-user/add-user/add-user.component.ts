@@ -19,7 +19,7 @@ export class AddUserComponent implements OnInit {
       return;
     }
     this.userService.addUser(form.value.username, form.value.email, form.value.role);
-    form.reset();
+    form.resetForm();
   }
 
 }

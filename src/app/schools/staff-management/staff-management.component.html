@@ -15,8 +15,61 @@
     </div>
     <div class="col-9">
       <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active">Add New Staff</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">Add Existing Staff</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link">Disabled</a>
+            </li>
+          </ul>
+        </div>
         <div class="card-body">
-
+          <form class="example-form" (submit)="onAddStaff(addStaffForm)" #addStaffForm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Name of Staff</mat-label>
+                  <input matInput name="staffName" ngModel #staffName="ngModel" required>
+                  <mat-error *ngIf="staffName.invalid">Please enter a valid name.</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Email ID</mat-label>
+                  <input matInput name="email" ngModel #email="ngModel" required email>
+                  <mat-error *ngIf="email.invalid">Please enter a valid email.</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Designation</mat-label>
+                    <select matNativeControl name="designation" ngModel #designation="ngModel" required>
+                      <option value="juniorTeacher">Junior Teacher</option>
+                      <option value="seniorTeacher">Senior Teacher</option>
+                      <option value="driver">Driver</option>
+                    </select>
+                    <mat-error *ngIf="designation.invalid">Please select a valid designation.</mat-error>
+                  </mat-form-field>
+              </div>
+            </div>
+            <hr>
+            <div class="container">
+              <div class="row">
+                <button style="margin: auto;" type="submit" class="btn btn-success btn-block">Submit</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
