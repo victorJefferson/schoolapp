@@ -10,40 +10,56 @@
   </div>
   <hr>
   <div class="row">
-    <div class="col-3">
+    <div class="col-md-3">
       <app-school-sidenav></app-school-sidenav>
     </div>
-    <div class="col-9">
+    <div class="col-md-4">
       <div class="card">
-        <div class="card-header">
+        <div class="card-body">
           <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link active">Add New Staff</a>
+              <a [ngClass]="(activatedTab === 'myStaffs')?'nav-link active':'nav-link'" (click)="onSelectTab('myStaffs')">
+                My Staffs
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">Add Existing Staff</a>
+              <a [ngClass]="(activatedTab === 'addNewStaff')?'nav-link active':'nav-link'" (click)="onSelectTab('addNewStaff')">
+                Add New Staff
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">Link</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link">Disabled</a>
+              <a [ngClass]="(activatedTab === 'assignExistingStaff')?'nav-link active':'nav-link'" (click)="onSelectTab('assignExistingStaff')">
+                Assign Staff
+              </a>
             </li>
           </ul>
-        </div>
-        <div class="card-body">
-          <form class="example-form" (submit)="onAddStaff(addStaffForm)" #addStaffForm="ngForm">
+          <br>
+          <div *ngIf="activatedTab === 'myStaffs'">
+            <ul class="list-group">
+              <li *ngFor="let thisSchoolStaff of thisSchoolStaffs" class="list-group-item sm">
+                <div class="row">
+                  <div class="col-sm-2">
+                    <ngx-avatar class="my-avatar" value="{{ thisSchoolStaff.name | initialize }}" size="35"> </ngx-avatar>
+                  </div>
+                  <div class="col-sm-10" style="margin: auto;">
+                    {{ thisSchoolStaff.name }}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <form *ngIf="activatedTab === 'addNewStaff'" class="example-form" (submit)="onAddStaff(addStaffForm)" #addStaffForm="ngForm">
             <div class="row">
               <div class="col-md-6">
                 <mat-form-field class="example-full-width">
-                  <mat-label>Name of Staff</mat-label>
+                  <mat-label class="small-font">Name of Staff</mat-label>
                   <input matInput name="staffName" ngModel #staffName="ngModel" required>
                   <mat-error *ngIf="staffName.invalid">Please enter a valid name.</mat-error>
                 </mat-form-field>
               </div>
               <div class="col-md-6">
                 <mat-form-field class="example-full-width">
-                  <mat-label>Email ID</mat-label>
+                  <mat-label class="small-font">Email ID</mat-label>
                   <input matInput name="email" ngModel #email="ngModel" required email>
                   <mat-error *ngIf="email.invalid">Please enter a valid email.</mat-error>
                 </mat-form-field>
@@ -53,7 +69,7 @@
             <div class="row">
               <div class="col-md-6">
                   <mat-form-field class="example-full-width">
-                    <mat-label>Designation</mat-label>
+                    <mat-label class="small-font">Designation</mat-label>
                     <select matNativeControl name="designation" ngModel #designation="ngModel" required>
                       <option value="juniorTeacher">Junior Teacher</option>
                       <option value="seniorTeacher">Senior Teacher</option>
@@ -70,6 +86,50 @@
               </div>
             </div>
           </form>
+          <div *ngIf="activatedTab === 'assignExistingStaff'">
+            <form class="example-form" (submit)="onAssignStaff(assignStaffForm)" #assignStaffForm="ngForm">
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label class="small-font">Staff Name</mat-label>
+                    <select [(ngModel)]="selectedExistingUserId" matNativeControl name="existingUserId" ngModel #existingUserId="ngModel" required>
+                      <option *ngFor="let staffNotassignedToSchools of staffsNotassignedToSchools"
+                      value="{{staffNotassignedToSchools.userId}}">{{staffNotassignedToSchools.name}}
+                      </option>
+                    </select>
+                    <mat-error *ngIf="existingUserId.invalid">Please select a Staff.</mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-full-width">
+                    <mat-label class="small-font">Designation</mat-label>
+                    <select matNativeControl name="designation" ngModel #designation="ngModel" required>
+                      <option value="juniorTeacher">Junior Teacher</option>
+                      <option value="seniorTeacher">Senior Teacher</option>
+                      <option value="driver">Driver</option>
+                    </select>
+                    <mat-error *ngIf="designation.invalid">Please select a valid designation.</mat-error>
+                  </mat-form-field>
+                  <div *ngIf="selectedExistingUserId">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-1">
+                            <ngx-avatar class="my-avatar" value="{{selectedExistingUserId | namify | initialize}}" size="35"> </ngx-avatar>
+                          </div>
+                          <div class="col-sm-10" style="margin: auto;">
+                            <p style="margin: auto;">{{selectedExistingUserId | namify}}</p>
+                          </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                          <button type="submit" class="btn btn-success btn-block">Add</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

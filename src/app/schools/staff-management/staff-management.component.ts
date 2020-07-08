@@ -18,7 +18,11 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   schools: School[] = [];
   schoolsSubs: Subscription;
   staffsSubs: Subscription;
-  staffs: User[] = [];
+  thisSchoolStaffsSubs: Subscription;
+  staffsNotassignedToSchools: User[] = [];
+  thisSchoolStaffs: User[] = [];
+  activatedTab: string = "myStaffs";
+  selectedExistingUserId: string;
 
   constructor(
     private schoolService: SchoolService,
@@ -30,10 +34,12 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.selectedSchoolId = params['schoolId'];
     });
+    // Initialize School Array
     this.schoolsSubs = this.schoolService.schoolsSub.subscribe((schools: School[])=> {
       this.schools = schools;
     });
     this.schools = this.schoolService.initSchools();
+    // Initialize Staffs not assigned to any school Array
     this.selectedSchool = this.schools.find(e => e.schoolId === this.selectedSchoolId);
     this.schools = this.schoolService.initSchools();
     this.staffsSubs = this.userService.usersSubj.subscribe(
@@ -43,14 +49,32 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     )
     let initUsers = this.userService.initUsers();
     this.getStaffsNotAssignedToSchool(initUsers);
+    // Initialize Staffs assigned to this school Array
+    this.thisSchoolStaffsSubs = this.userService.usersSubj.subscribe(
+      (users) => {
+        this.getStaffsAssignedToThisSchool(users);
+      }
+    )
+    let initThisSchoolStaffs = this.userService.initUsers();
+    this.getStaffsAssignedToThisSchool(initThisSchoolStaffs);
   }
 
   getStaffsNotAssignedToSchool(initUsers: User[]){
-    this.staffs = [];
+    this.staffsNotassignedToSchools = [];
     let i;
     for (i = 0; i < initUsers.length; i++){
       if(initUsers[i].role == "staff" && initUsers[i].schoolId == null){
-        this.staffs.push(initUsers[i]);
+        this.staffsNotassignedToSchools.push(initUsers[i]);
+      }
+    }
+  }
+
+  getStaffsAssignedToThisSchool(users: User[]){
+    this.thisSchoolStaffs = [];
+    let i;
+    for (i = 0; i < users.length; i++){
+      if(users[i].role == "staff" && users[i].schoolId == this.selectedSchoolId){
+        this.thisSchoolStaffs.push(users[i]);
       }
     }
   }
@@ -63,10 +87,30 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.userService.assignSchoolToUser(userId, this.selectedSchoolId);
     this.userService.assignDesignationToUser(userId, form.value.designation);
     form.resetForm();
+    this.activatedTab = "myStaffs";
+  }
+
+  onAssignStaff(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    this.userService.assignSchoolToUser(form.value.existingUserId, this.selectedSchoolId);
+    this.userService.assignDesignationToUser(form.value.existingUserId, form.value.designation);
+    form.resetForm();
+    this.activatedTab = "myStaffs";
+  }
+
+  onRemoveStaff(){
+    return;
+  }
+
+  onSelectTab(tab: string){
+    this.activatedTab = tab;
   }
 
   ngOnDestroy(){
     this.schoolsSubs.unsubscribe();
     this.staffsSubs.unsubscribe();
+    this.thisSchoolStaffsSubs.unsubscribe();
   }
 }
