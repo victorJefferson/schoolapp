@@ -1,3 +1,4 @@
+import { Sub } from './../subject.model';
 import { Class } from './../class.model';
 import { NgForm } from '@angular/forms';
 import { UserService } from './../../main-user/user.service';
@@ -18,9 +19,11 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   selectedSchool: School;
   schools: School[] = [];
   classes: Class[] = [];
+  subjects: Sub[] = [];
   schoolsSubs: Subscription;
   staffsSubs: Subscription;
   classesSubs: Subscription;
+  subjectSubs: Subscription;
   thisSchoolStaffsSubs: Subscription;
   staffsNotassignedToSchools: User[] = [];
   thisSchoolStaffs: User[] = [];
@@ -45,6 +48,9 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.initializeStaffsOfThisSchool();
     // Initialize Classes in this school
     this.initializeClassesInThisSchool();
+    // Initialize Subjects to Classes
+    this.initializeSubjectsToClasses();
+    console.log(this.subjects);
   }
 
   initializeClassesInThisSchool(){
@@ -77,6 +83,16 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.getStaffsNotAssignedToSchool(initUsers);
   }
 
+  initializeSubjectsToClasses(){
+    this.subjectSubs = this.schoolService.subjectsSub.subscribe(
+      (subjects) => {
+        this.getSubjectsInThisSchool(subjects);
+      }
+    )
+    let initSubs = this.schoolService.initSubjects();
+    this.getSubjectsInThisSchool(initSubs);
+  }
+
   getStaffsNotAssignedToSchool(initUsers: User[]){
     this.staffsNotassignedToSchools = [];
     let i;
@@ -103,6 +119,16 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     for (i = 0; i < classes.length; i++){
       if(classes[i].schoolId == this.selectedSchoolId){
         this.classes.push(classes[i]);
+      }
+    }
+  }
+
+  getSubjectsInThisSchool(subjects: Sub[]){
+    this.subjects = [];
+    let i;
+    for (i = 0; i < subjects.length; i++){
+      if(subjects[i].schoolId == this.selectedSchoolId){
+        this.subjects.push(subjects[i]);
       }
     }
   }

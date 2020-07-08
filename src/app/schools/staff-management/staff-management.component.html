@@ -22,7 +22,9 @@
           Class {{ selectedClass.name }}
         </div>
         <div class="card-body">
-
+          <div *ngFor="let subject of subjects">
+            <p *ngIf="subject.classId == selectedClass.classId">{{ subject.name }}</p>
+          </div>
         </div>
       </div>
     </div>

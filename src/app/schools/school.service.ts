@@ -1,3 +1,4 @@
+import { Sub } from './subject.model';
 import { Class } from './class.model';
 import { UserService } from './../main-user/user.service';
 import { Injectable } from '@angular/core';
@@ -11,8 +12,10 @@ import { Router } from '@angular/router';
 export class SchoolService {
   private schools: School[] = [];
   private classes: Class[] = [];
+  private subjects: Sub[] = [];
   schoolsSub = new Subject<School[]>();
   classesSub = new Subject<Class[]>();
+  subjectsSub = new Subject<Sub[]>();
   private schoolToEdit: School;
   private selectedSchoolId: string;
 
@@ -20,6 +23,7 @@ export class SchoolService {
     this.schools.push({schoolId: "s1", name: "NPS", city: "Namchi", admin: null});
     this.schools.push({schoolId: "s2", name: "Velammal", city: "Chennai", admin: null});
     this.classes.push({classId: "c1", name: "One", schoolId: "s1", teacherId: "u5", repId: null});
+    this.subjects.push({subjectId: "sub1", name: "English", classId: "c1", schoolId: "s1", performance: [{userId: "u1", marks: 56}, {userId: "u2", marks: 56} ]});
   }
   initSchools(){
     return [...this.schools];
@@ -35,6 +39,14 @@ export class SchoolService {
 
   emitNextClassesValue(){
     this.classesSub.next([...this.classes]);
+  }
+
+  initSubjects(){
+    return [...this.subjects];
+  }
+
+  emitNextSubjectsValue(){
+    this.subjectsSub.next([...this.subjects]);
   }
 
   addSchool(schoolName: string, city: string){
@@ -102,7 +114,7 @@ export class SchoolService {
     let lastclass = this.classes[lastclassIndex];
     let lastclassId = lastclass.classId;
     let nextclassIdNum = Number(lastclassId.substr(1,1)) + 1;
-    let classId = "s" + nextclassIdNum;
+    let classId = "c" + nextclassIdNum;
     return classId;
   }
 }
