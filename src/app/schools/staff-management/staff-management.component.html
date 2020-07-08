@@ -10,31 +10,49 @@
   </div>
   <hr>
   <div class="row">
+    <!-- Nav(Left) Contents of Page -->
     <div class="col-md-3">
       <app-school-sidenav></app-school-sidenav>
     </div>
-    <div class="col-md-4">
-      <div class="card">
+    <!-- Mid Contents of Page -->
+    <div class="col-md-5">
+      <!-- Selected Class -->
+      <div *ngIf="selectedClass" class="card">
+        <div class="card-header">
+          Class {{ selectedClass.name }}
+        </div>
         <div class="card-body">
+
+        </div>
+      </div>
+    </div>
+    <!-- Right Contents of Page -->
+    <div class="col-md-4">
+      <!-- Add Staff Panel -->
+      <mat-expansion-panel class="mb-1">
+        <mat-expansion-panel-header>
+          My Staffs
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
           <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a [ngClass]="(activatedTab === 'myStaffs')?'nav-link active':'nav-link'" (click)="onSelectTab('myStaffs')">
-                My Staffs
+              <a [ngClass]="(activatedTabForStaffTools === 'myStaffs')?'nav-link active':'nav-link'" (click)="onSelectStaffTab('myStaffs')">
+                All Staffs
               </a>
             </li>
             <li class="nav-item">
-              <a [ngClass]="(activatedTab === 'addNewStaff')?'nav-link active':'nav-link'" (click)="onSelectTab('addNewStaff')">
+              <a [ngClass]="(activatedTabForStaffTools === 'assignExistingStaff')?'nav-link active':'nav-link'" (click)="onSelectStaffTab('assignExistingStaff')">
+                Add Staff
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [ngClass]="(activatedTabForStaffTools === 'addNewStaff')?'nav-link active':'nav-link'" (click)="onSelectStaffTab('addNewStaff')">
                 Add New Staff
-              </a>
-            </li>
-            <li class="nav-item">
-              <a [ngClass]="(activatedTab === 'assignExistingStaff')?'nav-link active':'nav-link'" (click)="onSelectTab('assignExistingStaff')">
-                Assign Staff
               </a>
             </li>
           </ul>
           <br>
-          <div *ngIf="activatedTab === 'myStaffs'">
+          <div *ngIf="activatedTabForStaffTools === 'myStaffs'">
             <ul class="list-group">
               <li *ngFor="let thisSchoolStaff of thisSchoolStaffs" class="list-group-item sm">
                 <div class="row">
@@ -48,45 +66,7 @@
               </li>
             </ul>
           </div>
-          <form *ngIf="activatedTab === 'addNewStaff'" class="example-form" (submit)="onAddStaff(addStaffForm)" #addStaffForm="ngForm">
-            <div class="row">
-              <div class="col-md-6">
-                <mat-form-field class="example-full-width">
-                  <mat-label class="small-font">Name of Staff</mat-label>
-                  <input matInput name="staffName" ngModel #staffName="ngModel" required>
-                  <mat-error *ngIf="staffName.invalid">Please enter a valid name.</mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-md-6">
-                <mat-form-field class="example-full-width">
-                  <mat-label class="small-font">Email ID</mat-label>
-                  <input matInput name="email" ngModel #email="ngModel" required email>
-                  <mat-error *ngIf="email.invalid">Please enter a valid email.</mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-6">
-                  <mat-form-field class="example-full-width">
-                    <mat-label class="small-font">Designation</mat-label>
-                    <select matNativeControl name="designation" ngModel #designation="ngModel" required>
-                      <option value="juniorTeacher">Junior Teacher</option>
-                      <option value="seniorTeacher">Senior Teacher</option>
-                      <option value="driver">Driver</option>
-                    </select>
-                    <mat-error *ngIf="designation.invalid">Please select a valid designation.</mat-error>
-                  </mat-form-field>
-              </div>
-            </div>
-            <hr>
-            <div class="container">
-              <div class="row">
-                <button style="margin: auto;" type="submit" class="btn btn-success btn-block">Submit</button>
-              </div>
-            </div>
-          </form>
-          <div *ngIf="activatedTab === 'assignExistingStaff'">
+          <div *ngIf="activatedTabForStaffTools === 'assignExistingStaff'">
             <form class="example-form" (submit)="onAssignStaff(assignStaffForm)" #assignStaffForm="ngForm">
               <div class="row">
                 <div class="col-12">
@@ -130,8 +110,105 @@
               </div>
             </form>
           </div>
-        </div>
-      </div>
+          <form *ngIf="activatedTabForStaffTools === 'addNewStaff'" class="example-form" (submit)="onAddStaff(addStaffForm)" #addStaffForm="ngForm">
+            <div class="row">
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label class="small-font">Name of Staff</mat-label>
+                  <input matInput name="staffName" ngModel #staffName="ngModel" required>
+                  <mat-error *ngIf="staffName.invalid">Please enter a valid name.</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="example-full-width">
+                  <mat-label class="small-font">Email ID</mat-label>
+                  <input matInput name="email" ngModel #email="ngModel" required email>
+                  <mat-error *ngIf="email.invalid">Please enter a valid email.</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <mat-label class="small-font">Designation</mat-label>
+                    <select matNativeControl name="designation" ngModel #designation="ngModel" required>
+                      <option value="juniorTeacher">Junior Teacher</option>
+                      <option value="seniorTeacher">Senior Teacher</option>
+                      <option value="driver">Driver</option>
+                    </select>
+                    <mat-error *ngIf="designation.invalid">Please select a valid designation.</mat-error>
+                  </mat-form-field>
+              </div>
+            </div>
+            <hr>
+            <div class="container">
+              <div class="row">
+                <button style="margin: auto;" type="submit" class="btn btn-success btn-block">Submit</button>
+              </div>
+            </div>
+          </form>
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          My Classes
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a [ngClass]="(activatedTabForClassTools == 'allClasses')? 'nav-link active' : 'nav-link'"
+              (click)="onSelectClassTab('allClasses')">
+                All Classes
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [ngClass]="(activatedTabForClassTools == 'addClasses')? 'nav-link active' : 'nav-link'"
+              (click)="onSelectClassTab('addClasses')">
+                Add Class
+              </a>
+            </li>
+          </ul>
+          <br>
+          <div *ngIf="activatedTabForClassTools === 'allClasses'">
+            <ul class="list-group">
+              <li *ngFor="let class of classes" (click)="onSelectClass(class.classId)" class="list-group-item">
+                Class {{class.name}}
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="activatedTabForClassTools === 'addClasses'">
+            <form class="example-form" (submit)="onAddClass(addClassForm)" #addClassForm="ngForm">
+              <div class="row">
+                <div class="col-sm-6">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Class Name</mat-label>
+                    <input matInput ngModel name="className" #className="ngModel" required>
+                    <mat-error *ngIf="className.invalid">
+                      Please enter a valid Class name
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Teacher Assigned</mat-label>
+                    <select matNativeControl ngModel name="teacherId" #teacherId="ngModel" required>
+                      <option *ngFor="let thisSchoolStaff of thisSchoolStaffs"
+                        value="{{thisSchoolStaff.userId}}">{{thisSchoolStaff.name}}
+                      </option>
+                    </select>
+                    <mat-error *ngIf="teacherId.invalid">
+                      Please select a valid Teacher ID
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <hr>
+              <button type="submit" class="btn btn-block btn-success">Add Class</button>
+            </form>
+          </div>
+        </ng-template>
+      </mat-expansion-panel>
     </div>
   </div>
 </div>

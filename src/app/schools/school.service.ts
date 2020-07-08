@@ -1,5 +1,5 @@
+import { Class } from './class.model';
 import { UserService } from './../main-user/user.service';
-import { User } from './../main-user/user.model';
 import { Injectable } from '@angular/core';
 import { School } from './school.model';
 import { Subject } from 'rxjs';
@@ -10,14 +10,16 @@ import { Router } from '@angular/router';
 })
 export class SchoolService {
   private schools: School[] = [];
-  private users: User[];
+  private classes: Class[] = [];
   schoolsSub = new Subject<School[]>();
+  classesSub = new Subject<Class[]>();
   private schoolToEdit: School;
   private selectedSchoolId: string;
 
   constructor(private router: Router, private userService: UserService) {
     this.schools.push({schoolId: "s1", name: "NPS", city: "Namchi", admin: null});
     this.schools.push({schoolId: "s2", name: "Velammal", city: "Chennai", admin: null});
+    this.classes.push({classId: "c1", name: "One", schoolId: "s1", teacherId: "u5", repId: null});
   }
   initSchools(){
     return [...this.schools];
@@ -25,6 +27,14 @@ export class SchoolService {
 
   emitNextSchoolsValue(){
     this.schoolsSub.next([...this.schools]);
+  }
+
+  initClasses(){
+    return [...this.classes];
+  }
+
+  emitNextClassesValue(){
+    this.classesSub.next([...this.classes]);
   }
 
   addSchool(schoolName: string, city: string){
@@ -48,6 +58,23 @@ export class SchoolService {
     this.userService.assignDesignationToUser(admin, "admin");
   }
 
+  addClassToSchool(className: string, schoolId: string, teacherId: string, repId?: string){
+    if(repId){
+      console.log("Rep");
+      return;
+    }
+    let classId = this.generateClassId();
+    this.classes.push
+    ({
+      classId: classId,
+      name: className,
+      schoolId: schoolId,
+      teacherId: teacherId,
+      repId: null
+    })
+    this.emitNextClassesValue();
+  }
+
   selectSchool(selectSchoolId: string){
     this.selectedSchoolId = selectSchoolId;
     this.router.navigate(["/viewSchool",this.selectedSchoolId]);
@@ -62,8 +89,20 @@ export class SchoolService {
   }
 
   generateSchoolId(){
-    let id = this.schools.length + 1;
-    let schoolId = "s" + id;
+    let lastSchoolIndex = this.schools.length - 1;
+    let lastSchool = this.schools[lastSchoolIndex];
+    let lastSchoolId = lastSchool.schoolId;
+    let nextSchoolIdNum = Number(lastSchoolId.substr(1,1)) + 1;
+    let schoolId = "s" + nextSchoolIdNum;
     return schoolId;
+  }
+
+  generateClassId(){
+    let lastclassIndex = this.classes.length - 1;
+    let lastclass = this.classes[lastclassIndex];
+    let lastclassId = lastclass.classId;
+    let nextclassIdNum = Number(lastclassId.substr(1,1)) + 1;
+    let classId = "s" + nextclassIdNum;
+    return classId;
   }
 }

@@ -90,3 +90,7 @@ ngx-avatar{
   font-size: 12px;
 }
 
+.no-margin{
+  margin: 0;
+}
+

@@ -1,3 +1,4 @@
+import { Class } from './../class.model';
 import { NgForm } from '@angular/forms';
 import { UserService } from './../../main-user/user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -16,13 +17,17 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   selectedSchoolId: string;
   selectedSchool: School;
   schools: School[] = [];
+  classes: Class[] = [];
   schoolsSubs: Subscription;
   staffsSubs: Subscription;
+  classesSubs: Subscription;
   thisSchoolStaffsSubs: Subscription;
   staffsNotassignedToSchools: User[] = [];
   thisSchoolStaffs: User[] = [];
-  activatedTab: string = "myStaffs";
+  activatedTabForStaffTools: string = "myStaffs";
+  activatedTabForClassTools: string = "allClasses";
   selectedExistingUserId: string;
+  selectedClass: Class;
 
   constructor(
     private schoolService: SchoolService,
@@ -34,22 +39,25 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.selectedSchoolId = params['schoolId'];
     });
-    // Initialize School Array
-    this.schoolsSubs = this.schoolService.schoolsSub.subscribe((schools: School[])=> {
-      this.schools = schools;
-    });
-    this.schools = this.schoolService.initSchools();
     // Initialize Staffs not assigned to any school Array
-    this.selectedSchool = this.schools.find(e => e.schoolId === this.selectedSchoolId);
-    this.schools = this.schoolService.initSchools();
-    this.staffsSubs = this.userService.usersSubj.subscribe(
-      (users) => {
-        this.getStaffsNotAssignedToSchool(users);
+    this.initializeStaffsNotAssignedToSchools();
+    // Initialize Staffs assigned to this school Array
+    this.initializeStaffsOfThisSchool();
+    // Initialize Classes in this school
+    this.initializeClassesInThisSchool();
+  }
+
+  initializeClassesInThisSchool(){
+    this.classesSubs = this.schoolService.classesSub.subscribe(
+      (classes) => {
+        this.getClassesInThisSchool(classes);
       }
     )
-    let initUsers = this.userService.initUsers();
-    this.getStaffsNotAssignedToSchool(initUsers);
-    // Initialize Staffs assigned to this school Array
+    let initThisSchoolClasses = this.schoolService.initClasses();
+    this.getClassesInThisSchool(initThisSchoolClasses);
+  }
+
+  initializeStaffsOfThisSchool(){
     this.thisSchoolStaffsSubs = this.userService.usersSubj.subscribe(
       (users) => {
         this.getStaffsAssignedToThisSchool(users);
@@ -57,6 +65,16 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     )
     let initThisSchoolStaffs = this.userService.initUsers();
     this.getStaffsAssignedToThisSchool(initThisSchoolStaffs);
+  }
+
+  initializeStaffsNotAssignedToSchools(){
+    this.staffsSubs = this.userService.usersSubj.subscribe(
+      (users) => {
+        this.getStaffsNotAssignedToSchool(users);
+      }
+    )
+    let initUsers = this.userService.initUsers();
+    this.getStaffsNotAssignedToSchool(initUsers);
   }
 
   getStaffsNotAssignedToSchool(initUsers: User[]){
@@ -79,6 +97,16 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     }
   }
 
+  getClassesInThisSchool(classes: Class[]){
+    this.classes = [];
+    let i;
+    for (i = 0; i < classes.length; i++){
+      if(classes[i].schoolId == this.selectedSchoolId){
+        this.classes.push(classes[i]);
+      }
+    }
+  }
+
   onAddStaff(form: NgForm){
     if (form.invalid){
       return;
@@ -87,7 +115,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.userService.assignSchoolToUser(userId, this.selectedSchoolId);
     this.userService.assignDesignationToUser(userId, form.value.designation);
     form.resetForm();
-    this.activatedTab = "myStaffs";
+    this.activatedTabForStaffTools = "myStaffs";
   }
 
   onAssignStaff(form: NgForm){
@@ -97,20 +125,41 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.userService.assignSchoolToUser(form.value.existingUserId, this.selectedSchoolId);
     this.userService.assignDesignationToUser(form.value.existingUserId, form.value.designation);
     form.resetForm();
-    this.activatedTab = "myStaffs";
+    this.activatedTabForStaffTools = "myStaffs";
   }
 
   onRemoveStaff(){
     return;
   }
 
-  onSelectTab(tab: string){
-    this.activatedTab = tab;
+  onAddClass(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    this.schoolService.addClassToSchool(
+      form.value.className,
+      this.selectedSchoolId,
+      form.value.teacherId,
+      undefined
+    );
+    this.activatedTabForClassTools = "allClasses";
+  }
+
+  onSelectClass(classId: string){
+    this.selectedClass = this.classes.find(e => e.classId === classId);
+  }
+
+  onSelectStaffTab(tab: string){
+    this.activatedTabForStaffTools = tab;
+  }
+
+  onSelectClassTab(tab: string){
+    this.activatedTabForClassTools = tab;
   }
 
   ngOnDestroy(){
-    this.schoolsSubs.unsubscribe();
     this.staffsSubs.unsubscribe();
     this.thisSchoolStaffsSubs.unsubscribe();
+    this.classesSubs.unsubscribe();
   }
 }
