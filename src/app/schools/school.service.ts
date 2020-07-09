@@ -87,6 +87,42 @@ export class SchoolService {
     this.emitNextClassesValue();
   }
 
+  addClassTemplateToSchool(template: string, schoolId: string){
+    if(template){
+      this.classes = this.classes.filter((o) => {
+        return o.schoolId !== schoolId;
+      });
+      this.subjects = this.subjects.filter((o) => {
+        return o.schoolId !== schoolId;
+      });
+    }
+    if (template === 'primary'){
+      console.log("Will Add Classes 1 to 5");
+
+    }
+    if (template === 'secondary'){
+      console.log("Will Add Classes 1 to 10");
+    }
+    if (template === 'higherSecondary'){
+      console.log("Will Add Classes 1 to 12");
+    }
+    this.emitNextClassesValue();
+    this.emitNextSubjectsValue();
+  }
+
+  addSubjectToClassInSchool(subjectName: string, classId: string, schoolId: string){
+    let subjectId = this.generateSubjectId();
+    this.subjects.push
+    ({
+      subjectId: subjectId,
+      name: subjectName,
+      classId: classId,
+      schoolId: schoolId,
+      performance: undefined
+    })
+    this.emitNextClassesValue();
+  }
+
   selectSchool(selectSchoolId: string){
     this.selectedSchoolId = selectSchoolId;
     this.router.navigate(["/viewSchool",this.selectedSchoolId]);
@@ -101,6 +137,9 @@ export class SchoolService {
   }
 
   generateSchoolId(){
+    if(!this.schools.length){
+      return "s1";
+    }
     let lastSchoolIndex = this.schools.length - 1;
     let lastSchool = this.schools[lastSchoolIndex];
     let lastSchoolId = lastSchool.schoolId;
@@ -110,11 +149,26 @@ export class SchoolService {
   }
 
   generateClassId(){
+    if(!this.classes.length){
+      return "c1";
+    }
     let lastclassIndex = this.classes.length - 1;
     let lastclass = this.classes[lastclassIndex];
     let lastclassId = lastclass.classId;
     let nextclassIdNum = Number(lastclassId.substr(1,1)) + 1;
     let classId = "c" + nextclassIdNum;
     return classId;
+  }
+
+  generateSubjectId(){
+    if(!this.subjects.length){
+      return "sub1";
+    }
+    let lastSubIndex = this.subjects.length - 1;
+    let lastSub = this.subjects[lastSubIndex];
+    let lastSubId = lastSub.subjectId;
+    let nextSubIdNum = Number(lastSubId.substr(1,1)) + 1;
+    let subId = "sub" + nextSubIdNum;
+    return subId;
   }
 }

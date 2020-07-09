@@ -31,6 +31,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   activatedTabForClassTools: string = "allClasses";
   selectedExistingUserId: string;
   selectedClass: Class;
+  selectedClassTemplate: string;
 
   constructor(
     private schoolService: SchoolService,
@@ -50,7 +51,6 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.initializeClassesInThisSchool();
     // Initialize Subjects to Classes
     this.initializeSubjectsToClasses();
-    console.log(this.subjects);
   }
 
   initializeClassesInThisSchool(){
@@ -169,6 +169,23 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
       undefined
     );
     this.activatedTabForClassTools = "allClasses";
+  }
+
+  onAddClassTemplate(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    this.schoolService.addClassTemplateToSchool(form.value.template, this.selectedSchoolId);
+    form.resetForm();
+    this.activatedTabForClassTools = "allClasses";
+    this.selectedClass = undefined;
+  }
+
+  onAddSubject(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    // this.schoolService.addSubjectToClassInSchool();
   }
 
   onSelectClass(classId: string){

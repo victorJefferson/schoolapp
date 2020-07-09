@@ -33,23 +33,23 @@
       <!-- Add Staff Panel -->
       <mat-expansion-panel class="mb-1">
         <mat-expansion-panel-header>
-          My Staffs
+          Manage Staffs
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
           <ul class="nav nav-tabs">
             <li class="nav-item">
               <a [ngClass]="(activatedTabForStaffTools === 'myStaffs')?'nav-link active':'nav-link'" (click)="onSelectStaffTab('myStaffs')">
-                All Staffs
+                All
               </a>
             </li>
             <li class="nav-item">
               <a [ngClass]="(activatedTabForStaffTools === 'assignExistingStaff')?'nav-link active':'nav-link'" (click)="onSelectStaffTab('assignExistingStaff')">
-                Add Staff
+                Add
               </a>
             </li>
             <li class="nav-item">
               <a [ngClass]="(activatedTabForStaffTools === 'addNewStaff')?'nav-link active':'nav-link'" (click)="onSelectStaffTab('addNewStaff')">
-                Add New Staff
+                Add New
               </a>
             </li>
           </ul>
@@ -152,22 +152,28 @@
           </form>
         </ng-template>
       </mat-expansion-panel>
-      <mat-expansion-panel>
+      <mat-expansion-panel class="mb-1">
         <mat-expansion-panel-header>
-          My Classes
+          Manage Classes
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
           <ul class="nav nav-tabs">
             <li class="nav-item">
               <a [ngClass]="(activatedTabForClassTools == 'allClasses')? 'nav-link active' : 'nav-link'"
               (click)="onSelectClassTab('allClasses')">
-                All Classes
+                All
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [ngClass]="(activatedTabForClassTools == 'classTemplates')? 'nav-link active' : 'nav-link'"
+              (click)="onSelectClassTab('classTemplates')">
+                Class Templates
               </a>
             </li>
             <li class="nav-item">
               <a [ngClass]="(activatedTabForClassTools == 'addClasses')? 'nav-link active' : 'nav-link'"
               (click)="onSelectClassTab('addClasses')">
-                Add Class
+                Add
               </a>
             </li>
           </ul>
@@ -209,6 +215,38 @@
               <button type="submit" class="btn btn-block btn-success">Add Class</button>
             </form>
           </div>
+          <div *ngIf="activatedTabForClassTools === 'classTemplates'">
+            <form class="example-form" (submit)="onAddClassTemplate(addTemplateForm)" #addTemplateForm="ngForm">
+              <div class="row">
+                <div class="col-sm-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Select Template</mat-label>
+                    <select matNativeControl name="template" [(ngModel)]="selectedClassTemplate" ngModel #template="ngModel" required>
+                      <option value="primary">Primary School</option>
+                      <option value="secondary">Secondary School</option>
+                      <option value="higherSecondary">Higher Secondary School</option>
+                    </select>
+                    <mat-error *ngIf="template.invalid">
+                      Please enter a valid Class name
+                    </mat-error>
+                  </mat-form-field>
+                  <div *ngIf="selectedClassTemplate">
+                    <p>{{ selectedClassTemplate }}</p>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <button type="submit" class="btn btn-block btn-success">Use Template</button>
+            </form>
+          </div>
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          Manage Subjects
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          Some deferred content
         </ng-template>
       </mat-expansion-panel>
     </div>
