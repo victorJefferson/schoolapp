@@ -29,9 +29,11 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   thisSchoolStaffs: User[] = [];
   activatedTabForStaffTools: string = "myStaffs";
   activatedTabForClassTools: string = "allClasses";
+  activatedTabForSubTools: string = "addSub";
   selectedExistingUserId: string;
   selectedClass: Class;
   selectedClassTemplate: string;
+  trial: number = 2;
 
   constructor(
     private schoolService: SchoolService,
@@ -51,6 +53,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.initializeClassesInThisSchool();
     // Initialize Subjects to Classes
     this.initializeSubjectsToClasses();
+    this.selectedClass = this.classes[0];
   }
 
   initializeClassesInThisSchool(){
@@ -154,6 +157,13 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.activatedTabForStaffTools = "myStaffs";
   }
 
+  assignTeacherToClass(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    this.schoolService.assignTeacherToClass(form.value.teacherId,this.selectedClass.classId);
+  }
+
   onRemoveStaff(){
     return;
   }
@@ -162,13 +172,14 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     if(form.invalid){
       return;
     }
-    this.schoolService.addClassToSchool(
+    let classId = this.schoolService.addClassToSchool(
       form.value.className,
       this.selectedSchoolId,
       form.value.teacherId,
       undefined
     );
     this.activatedTabForClassTools = "allClasses";
+    this.onSelectClass(classId);
   }
 
   onAddClassTemplate(form: NgForm){
@@ -185,7 +196,13 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     if(form.invalid){
       return;
     }
-    // this.schoolService.addSubjectToClassInSchool();
+    this.schoolService.addSubjectToClassInSchool(form.value.subName, form.value.classId, form.value.teacherId, this.selectedSchoolId);
+    this.selectedClass = this.classes.find(e => e.classId === form.value.classId);
+    form.resetForm();
+  }
+
+  onEditSubject(){
+    // console.log(subjectId);
   }
 
   onSelectClass(classId: string){
@@ -199,6 +216,11 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   onSelectClassTab(tab: string){
     this.activatedTabForClassTools = tab;
   }
+
+  onSelectSubTab(tab: string){
+    this.activatedTabForSubTools = tab;
+  }
+
 
   ngOnDestroy(){
     this.staffsSubs.unsubscribe();

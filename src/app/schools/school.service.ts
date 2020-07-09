@@ -18,12 +18,14 @@ export class SchoolService {
   subjectsSub = new Subject<Sub[]>();
   private schoolToEdit: School;
   private selectedSchoolId: string;
+  private refClasses: Array<string> = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"]
 
   constructor(private router: Router, private userService: UserService) {
     this.schools.push({schoolId: "s1", name: "NPS", city: "Namchi", admin: null});
     this.schools.push({schoolId: "s2", name: "Velammal", city: "Chennai", admin: null});
     this.classes.push({classId: "c1", name: "One", schoolId: "s1", teacherId: "u5", repId: null});
-    this.subjects.push({subjectId: "sub1", name: "English", classId: "c1", schoolId: "s1", performance: [{userId: "u1", marks: 56}, {userId: "u2", marks: 56} ]});
+    this.subjects.push({subjectId: "sub1", name: "English", classId: "c1", teacherId: "u5", schoolId: "s1", performance: [{userId: "u1", marks: 56}, {userId: "u2", marks: 56} ]});
+    this.subjects.push({subjectId: "sub2", name: "Maths", classId: "c1", teacherId: "u6", schoolId: "s1", performance: [{userId: "u1", marks: 56}, {userId: "u2", marks: 56} ]});
   }
   initSchools(){
     return [...this.schools];
@@ -70,6 +72,10 @@ export class SchoolService {
     this.userService.assignDesignationToUser(admin, "admin");
   }
 
+  updateSubject(subject: Sub){
+    console.log(subject);
+  }
+
   addClassToSchool(className: string, schoolId: string, teacherId: string, repId?: string){
     if(repId){
       console.log("Rep");
@@ -85,6 +91,7 @@ export class SchoolService {
       repId: null
     })
     this.emitNextClassesValue();
+    return classId;
   }
 
   addClassTemplateToSchool(template: string, schoolId: string){
@@ -97,20 +104,27 @@ export class SchoolService {
       });
     }
     if (template === 'primary'){
-      console.log("Will Add Classes 1 to 5");
-
+      let i;
+      for (i=0; i<5; i++){
+        this.addClassToSchool(this.refClasses[i], schoolId, undefined, undefined);
+      }
     }
     if (template === 'secondary'){
-      console.log("Will Add Classes 1 to 10");
+      let i;
+      for (i=0; i<10; i++){
+        this.addClassToSchool(this.refClasses[i], schoolId, undefined, undefined);
+      }
     }
     if (template === 'higherSecondary'){
-      console.log("Will Add Classes 1 to 12");
+      let i;
+      for (i=0; i<12; i++){
+        this.addClassToSchool(this.refClasses[i], schoolId, undefined, undefined);
+      }
     }
-    this.emitNextClassesValue();
     this.emitNextSubjectsValue();
   }
 
-  addSubjectToClassInSchool(subjectName: string, classId: string, schoolId: string){
+  addSubjectToClassInSchool(subjectName: string, classId: string, teacherId: string, schoolId: string){
     let subjectId = this.generateSubjectId();
     this.subjects.push
     ({
@@ -118,8 +132,16 @@ export class SchoolService {
       name: subjectName,
       classId: classId,
       schoolId: schoolId,
+      teacherId: teacherId,
       performance: undefined
     })
+    this.emitNextSubjectsValue();
+  }
+
+  assignTeacherToClass(userId: string, classId: string){
+    let classToUpdate = this.classes.find(e => e.classId === classId);
+    let classToUpdateIndex = this.classes.indexOf(classToUpdate);
+    this.classes[classToUpdateIndex].teacherId = userId;
     this.emitNextClassesValue();
   }
 
@@ -167,7 +189,7 @@ export class SchoolService {
     let lastSubIndex = this.subjects.length - 1;
     let lastSub = this.subjects[lastSubIndex];
     let lastSubId = lastSub.subjectId;
-    let nextSubIdNum = Number(lastSubId.substr(1,1)) + 1;
+    let nextSubIdNum = Number(lastSubId.substr(3,1)) + 1;
     let subId = "sub" + nextSubIdNum;
     return subId;
   }

@@ -94,3 +94,26 @@ ngx-avatar{
   margin: 0;
 }
 
+.alert-danger{
+  background-color: transparent!important;
+  border: none;
+  margin: 0;
+}
+
+.material-icons{
+  font-size: 20px;
+}
+
+.btn-smallest{
+  height: 30px;
+  width:  40px;
+  padding: 0;
+  padding-top: 2%;
+}
+
+.book-text{
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+}
+

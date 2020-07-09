@@ -5,6 +5,7 @@ export class Sub {
     public name: string,
     public classId: string,
     public schoolId: string,
+    public teacherId: string,
     public performance?:
     {
       userId: string,
