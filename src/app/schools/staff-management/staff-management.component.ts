@@ -3,7 +3,6 @@ import { Class } from './../class.model';
 import { NgForm } from '@angular/forms';
 import { UserService } from './../../main-user/user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { School } from '../school.model';
 import { Subscription } from 'rxjs';
 import { SchoolService } from '../school.service';
 import { ActivatedRoute } from '@angular/router';
@@ -16,24 +15,17 @@ import { User } from 'src/app/main-user/user.model';
 })
 export class StaffManagementComponent implements OnInit, OnDestroy {
   selectedSchoolId: string;
-  selectedSchool: School;
-  schools: School[] = [];
   classes: Class[] = [];
   subjects: Sub[] = [];
-  schoolsSubs: Subscription;
-  staffsSubs: Subscription;
+  SelectedSubjects: Sub[] = [];
   classesSubs: Subscription;
   subjectSubs: Subscription;
   thisSchoolStaffsSubs: Subscription;
-  staffsNotassignedToSchools: User[] = [];
   thisSchoolStaffs: User[] = [];
   activatedTabForStaffTools: string = "myStaffs";
-  activatedTabForClassTools: string = "allClasses";
-  activatedTabForSubTools: string = "addSub";
   selectedExistingUserId: string;
   selectedClass: Class;
-  selectedClassTemplate: string;
-  trial: number = 2;
+  selectedClassSubs: Subscription;
 
   constructor(
     private schoolService: SchoolService,
@@ -45,15 +37,19 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       this.selectedSchoolId = params['schoolId'];
     });
-    // Initialize Staffs not assigned to any school Array
-    this.initializeStaffsNotAssignedToSchools();
     // Initialize Staffs assigned to this school Array
     this.initializeStaffsOfThisSchool();
     // Initialize Classes in this school
     this.initializeClassesInThisSchool();
     // Initialize Subjects to Classes
     this.initializeSubjectsToClasses();
-    this.selectedClass = this.classes[0];
+    // To Receive the selected Class, also after adding Subject to that class and to Initiate subjects belonging to that class
+    this.selectedClassSubs = this.schoolService.selectedClassSubj.subscribe(selecetedClass => {
+      this.selectedClass = selecetedClass;
+      this.SelectedSubjects = this.subjects.filter((o) => {
+        return o.classId === this.selectedClass.classId;
+      });
+    })
   }
 
   initializeClassesInThisSchool(){
@@ -76,16 +72,6 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.getStaffsAssignedToThisSchool(initThisSchoolStaffs);
   }
 
-  initializeStaffsNotAssignedToSchools(){
-    this.staffsSubs = this.userService.usersSubj.subscribe(
-      (users) => {
-        this.getStaffsNotAssignedToSchool(users);
-      }
-    )
-    let initUsers = this.userService.initUsers();
-    this.getStaffsNotAssignedToSchool(initUsers);
-  }
-
   initializeSubjectsToClasses(){
     this.subjectSubs = this.schoolService.subjectsSub.subscribe(
       (subjects) => {
@@ -94,16 +80,6 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     )
     let initSubs = this.schoolService.initSubjects();
     this.getSubjectsInThisSchool(initSubs);
-  }
-
-  getStaffsNotAssignedToSchool(initUsers: User[]){
-    this.staffsNotassignedToSchools = [];
-    let i;
-    for (i = 0; i < initUsers.length; i++){
-      if(initUsers[i].role == "staff" && initUsers[i].schoolId == null){
-        this.staffsNotassignedToSchools.push(initUsers[i]);
-      }
-    }
   }
 
   getStaffsAssignedToThisSchool(users: User[]){
@@ -136,27 +112,6 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     }
   }
 
-  onAddStaff(form: NgForm){
-    if (form.invalid){
-      return;
-    }
-    let userId = this.userService.addUser(form.value.staffName, form.value.email, "staff");
-    this.userService.assignSchoolToUser(userId, this.selectedSchoolId);
-    this.userService.assignDesignationToUser(userId, form.value.designation);
-    form.resetForm();
-    this.activatedTabForStaffTools = "myStaffs";
-  }
-
-  onAssignStaff(form: NgForm){
-    if(form.invalid){
-      return;
-    }
-    this.userService.assignSchoolToUser(form.value.existingUserId, this.selectedSchoolId);
-    this.userService.assignDesignationToUser(form.value.existingUserId, form.value.designation);
-    form.resetForm();
-    this.activatedTabForStaffTools = "myStaffs";
-  }
-
   assignTeacherToClass(form: NgForm){
     if(form.invalid){
       return;
@@ -168,63 +123,14 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     return;
   }
 
-  onAddClass(form: NgForm){
-    if(form.invalid){
-      return;
-    }
-    let classId = this.schoolService.addClassToSchool(
-      form.value.className,
-      this.selectedSchoolId,
-      form.value.teacherId,
-      undefined
-    );
-    this.activatedTabForClassTools = "allClasses";
-    this.onSelectClass(classId);
-  }
-
-  onAddClassTemplate(form: NgForm){
-    if(form.invalid){
-      return;
-    }
-    this.schoolService.addClassTemplateToSchool(form.value.template, this.selectedSchoolId);
-    form.resetForm();
-    this.activatedTabForClassTools = "allClasses";
-    this.selectedClass = undefined;
-  }
-
-  onAddSubject(form: NgForm){
-    if(form.invalid){
-      return;
-    }
-    this.schoolService.addSubjectToClassInSchool(form.value.subName, form.value.classId, form.value.teacherId, this.selectedSchoolId);
-    this.selectedClass = this.classes.find(e => e.classId === form.value.classId);
-    form.resetForm();
-  }
-
   onEditSubject(){
     // console.log(subjectId);
   }
 
-  onSelectClass(classId: string){
-    this.selectedClass = this.classes.find(e => e.classId === classId);
-  }
-
-  onSelectStaffTab(tab: string){
-    this.activatedTabForStaffTools = tab;
-  }
-
-  onSelectClassTab(tab: string){
-    this.activatedTabForClassTools = tab;
-  }
-
-  onSelectSubTab(tab: string){
-    this.activatedTabForSubTools = tab;
-  }
-
-
   ngOnDestroy(){
-    this.staffsSubs.unsubscribe();
     this.thisSchoolStaffsSubs.unsubscribe();
     this.classesSubs.unsubscribe();
+    this.subjectSubs.unsubscribe();
+    this.selectedClassSubs.unsubscribe();
   }
 }

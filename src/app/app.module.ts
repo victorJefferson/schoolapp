@@ -24,6 +24,9 @@ import { ViewSchoolComponent } from './schools/view-school/view-school.component
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { StaffManagementComponent } from './schools/staff-management/staff-management.component';
 import { SchoolSidenavComponent } from './schools/school-sidenav/school-sidenav.component';
+import { ManageSubjectsComponent } from './schools/manage-subjects/manage-subjects.component';
+import { ManageClassesComponent } from './schools/manage-classes/manage-classes.component';
+import { ManageStaffsComponent } from './schools/manage-staffs/manage-staffs.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,10 @@ import { SchoolSidenavComponent } from './schools/school-sidenav/school-sidenav.
     ViewSchoolComponent,
     SidenavComponent,
     StaffManagementComponent,
-    SchoolSidenavComponent
+    SchoolSidenavComponent,
+    ManageSubjectsComponent,
+    ManageClassesComponent,
+    ManageStaffsComponent
   ],
   imports: [
     BrowserModule,

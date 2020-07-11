@@ -16,6 +16,7 @@ export class SchoolService {
   schoolsSub = new Subject<School[]>();
   classesSub = new Subject<Class[]>();
   subjectsSub = new Subject<Sub[]>();
+  selectedClassSubj = new Subject<Class>();
   private schoolToEdit: School;
   private selectedSchoolId: string;
   private refClasses: Array<string> = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"]
@@ -122,6 +123,7 @@ export class SchoolService {
       }
     }
     this.emitNextSubjectsValue();
+    this.selectedClassSubj.next(undefined);
   }
 
   addSubjectToClassInSchool(subjectName: string, classId: string, teacherId: string, schoolId: string){
@@ -136,6 +138,11 @@ export class SchoolService {
       performance: undefined
     })
     this.emitNextSubjectsValue();
+    this.selectClassToDisplay(classId);
+  }
+
+  selectClassToDisplay(classId: string){
+    this.selectedClassSubj.next(this.classes.find(e => e.classId === classId));
   }
 
   assignTeacherToClass(userId: string, classId: string){
