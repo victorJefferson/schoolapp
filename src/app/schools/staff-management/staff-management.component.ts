@@ -17,7 +17,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   selectedSchoolId: string;
   classes: Class[] = [];
   subjects: Sub[] = [];
-  SelectedSubjects: Sub[] = [];
+  selectedSubjects: Sub[] = [];
   classesSubs: Subscription;
   subjectSubs: Subscription;
   thisSchoolStaffsSubs: Subscription;
@@ -25,7 +25,10 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
   activatedTabForStaffTools: string = "myStaffs";
   selectedExistingUserId: string;
   selectedClass: Class;
+  selectedSubject: Sub;
+  selectedSubjectSubs: Subscription;
   selectedClassSubs: Subscription;
+  classTeacherDivMode: string = "view";
 
   constructor(
     private schoolService: SchoolService,
@@ -43,10 +46,14 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.initializeClassesInThisSchool();
     // Initialize Subjects to Classes
     this.initializeSubjectsToClasses();
+    // Subscribing to Selected Subject in School Service to Hide Edit Subject while adding a new Class
+    this.selectedSubjectSubs = this.schoolService.selectedSubjectSubj.subscribe(subject => {
+      this.selectedSubject = subject;
+    })
     // To Receive the selected Class, also after adding Subject to that class and to Initiate subjects belonging to that class
     this.selectedClassSubs = this.schoolService.selectedClassSubj.subscribe(selecetedClass => {
       this.selectedClass = selecetedClass;
-      this.SelectedSubjects = this.subjects.filter((o) => {
+      this.selectedSubjects = this.subjects.filter((o) => {
         return o.classId === this.selectedClass.classId;
       });
     })
@@ -119,12 +126,34 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.schoolService.assignTeacherToClass(form.value.teacherId,this.selectedClass.classId);
   }
 
+  changeClassTeacher(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    this.schoolService.assignTeacherToClass(form.value.teacherId, this.selectedClass.classId);
+    form.resetForm();
+    this.classTeacherDivMode = 'view';
+  }
+
+  onSelectSubject(subjectId: string){
+    this.selectedSubject = this.subjects.find(e => e.subjectId === subjectId);
+  }
+
   onRemoveStaff(){
     return;
   }
 
-  onEditSubject(){
-    // console.log(subjectId);
+  updateSubject(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    this.schoolService.updateSubject(this.selectedSubject.subjectId, form.value.subjectName, form.value.teacherId);
+    form.resetForm();
+    this.selectedSubject = undefined;
+  }
+
+  onClassTeacherDivModeChange(mode: string){
+    this.classTeacherDivMode = mode;
   }
 
   ngOnDestroy(){
@@ -132,5 +161,6 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     this.classesSubs.unsubscribe();
     this.subjectSubs.unsubscribe();
     this.selectedClassSubs.unsubscribe();
+    this.selectedSubjectSubs.unsubscribe();
   }
 }

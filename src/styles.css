@@ -9,9 +9,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   box-shadow: none;
 }
 
-ngx-avatar{
+mat-toolbar{
+  background: #30303d!important;
+}
+
+ngx-avatar.navbar-tem{
   border-radius:50%;
   box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+}
+
+.right-shadow{
+  box-shadow: 5px 0 5px -5px #333;
 }
 
 .example-spacer {
@@ -20,6 +28,11 @@ ngx-avatar{
 
 .btn-dark{
   box-shadow: 0 8px 6px -6px black;
+}
+
+.dark-bg{
+  background: #30303d;
+  color: #fff;
 }
 
 .example-form {
@@ -58,7 +71,7 @@ ngx-avatar{
 }
 
 .list-group-item.active{
-  background-color: #3F51B5!important;
+  background-color: #30303d!important;
   border: none!important;
 }
 
@@ -94,6 +107,10 @@ ngx-avatar{
   margin: 0;
 }
 
+.centered{
+  margin: auto!important;
+}
+
 .alert-danger{
   background-color: transparent!important;
   border: none;
@@ -117,3 +134,6 @@ ngx-avatar{
   text-align: center;
 }
 
+.banner-img{
+  height: 390px
+}

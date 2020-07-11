@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header dark-bg">
           <h4>Staff Management</h4>
         </div>
       </div>
@@ -11,12 +11,15 @@
   <hr>
   <div class="row">
     <!-- Nav(Left) Contents of Page -->
-    <div class="col-md-3">
+    <div class="col-lg-3">
       <app-school-sidenav></app-school-sidenav>
     </div>
     <!-- Mid Contents of Page -->
-    <div class="col-md-5">
+    <div class="col-lg-5">
       <!-- Selected Class -->
+      <div *ngIf="!selectedClass" class="card">
+        <img class="banner-img" src="../../../assets/images/staffManage.png">
+      </div>
       <div *ngIf="selectedClass" class="card">
         <div class="card-header">
           Class {{ selectedClass.name }}
@@ -25,7 +28,7 @@
           <div *ngIf="!selectedClass.teacherId" class="container mb-2">
             <form (submit)="assignTeacherToClass(assignClassTeacherForm)" #assignClassTeacherForm="ngForm">
               <div class="row">
-                <div class="col-sm-8">
+                <div class="col-md-8">
                   <mat-form-field class="example-full-width">
                     <mat-label>Assign Class Teacher</mat-label>
                     <select matNativeControl ngModel name="teacherId" #teacherId="ngModel" required>
@@ -38,43 +41,109 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-md-4">
                   <button type="submit" class="btn btn-block btn-success">Assign</button>
                 </div>
              </div>
             </form>
           </div>
-          <div *ngIf="selectedClass.teacherId" class="mb-2">
-            <li class="list-group-item sm">
+          <div *ngIf="selectedClass.teacherId && classTeacherDivMode == 'view'" class="mb-2">
+            <div class="row">
+              <div class="col-sm-8">
+                <li class="list-group-item sm">
+                  <div style="display: flex;">
+                    <div style="margin-right: 15px; margin-top: 1%">
+                      Class Teacher:
+                    </div>
+                    <ngx-avatar class="my-avatar"value="{{ selectedClass.teacherId | namify | initialize }}" size="25"></ngx-avatar>
+                    <div style="margin-left: 10px; margin-top: 1%;">
+                      {{ selectedClass.teacherId | namify }}
+                    </div>
+                  </div>
+                </li>
+              </div>
+              <div class="col-md-4" style="padding-top: 1%;">
+                <button class="btn btn-block btn-primary" (click)="onClassTeacherDivModeChange('edit')">Change</button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="selectedClass.teacherId && classTeacherDivMode == 'edit'" class="mb-2">
+            <form (submit)="changeClassTeacher(changeClassTeacherForm)" #changeClassTeacherForm="ngForm">
               <div class="row">
-                <div class="col-sm-5" style="margin: auto;">
-                  Class Teacher:
+                <div class="col-sm-8">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Change Class Teacher</mat-label>
+                    <select matNativeControl ngModel name="teacherId" #teacherId="ngModel" required>
+                      <option *ngFor="let thisSchoolStaff of thisSchoolStaffs"
+                        value="{{ thisSchoolStaff.userId }}">{{ thisSchoolStaff.userId | namify }}
+                      </option>
+                    </select>
+                    <mat-error *ngIf="teacherId.invalid">Please select a Teacher to Update</mat-error>
+                  </mat-form-field>
                 </div>
-                <div class="col-sm-2">
-                  <ngx-avatar class="my-avatar" value="{{ selectedClass.teacherId | namify | initialize }}" size="35"> </ngx-avatar>
-                </div>
-                <div class="col-sm-5" style="margin: auto;">
-                  {{ selectedClass.teacherId | namify }}
+                <div class="col-sm-4">
+                  <button type="submit" class="btn btn-block btn-success">Update</button>
                 </div>
               </div>
-            </li>
+          </form>
           </div>
           <div class="row">
-            <ng-container *ngFor="let subject of SelectedSubjects">
-              <div class="col-4 mb-2">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="book-text">{{ subject.name }}</p>
-                  </div>
+            <div class="col-12">
+              <div class="list-group-item active">
+                Subjects in Class {{ selectedClass.name }}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="list-group">
+                <div *ngFor="let subject of selectedSubjects" class="list-group-item" (click)="onSelectSubject(subject.subjectId)">
+                  <span class="float-left">{{ subject.name }}</span>
+                  <ngx-avatar class="my-avatar float-right"
+                    value="{{ subject.teacherId | namify | initialize }}"
+                    matTooltip="{{ subject.teacherId | namify }}"
+                    size="25">
+                  </ngx-avatar>
                 </div>
               </div>
-            </ng-container>
+            </div>
+          </div>
+          <div *ngIf="selectedSubject" class="row mt-2">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  Updating {{ selectedSubject.name }} for Class {{ selectedClass.name }}
+                </div>
+                <div class="card-body">
+                  <form (submit)="updateSubject(updateSubjectForm)" #updateSubjectForm="ngForm">
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Enter Subject Name</mat-label>
+                      <input matInput ngModel #subjectName="ngModel" name="subjectName" required>
+                      <mat-error *ngIf="subjectName.invalid">Enter a valid Subject Name</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                      <mat-label>Change Class Teacher</mat-label>
+                      <select matNativeControl ngModel name="teacherId" #teacherId="ngModel" required>
+                        <option *ngFor="let thisSchoolStaff of thisSchoolStaffs"
+                          value="{{ thisSchoolStaff.userId }}">{{ thisSchoolStaff.userId | namify }}
+                        </option>
+                      </select>
+                      <mat-error *ngIf="teacherId.invalid">Please select a Teacher to Update</mat-error>
+                    </mat-form-field>
+                    <button class="btn btn-block btn-success" type="submit">Update</button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Right Contents of Page -->
-    <div class="col-md-4">
+    <div class="col-lg-4">
+      <mat-card class="mb-2 dark-bg">
+        <strong>Management Tools</strong>
+      </mat-card>
       <!-- Manage Staffs Panel -->
       <app-manage-staffs></app-manage-staffs>
       <!-- Manage Classes Panel -->

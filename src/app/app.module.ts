@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip'
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AvatarModule } from 'ngx-avatar';
@@ -58,6 +59,7 @@ import { ManageStaffsComponent } from './schools/manage-staffs/manage-staffs.com
     MatCardModule,
     MatExpansionModule,
     MatInputModule,
+    MatTooltipModule,
     AvatarModule,
     HttpClientModule
   ],
