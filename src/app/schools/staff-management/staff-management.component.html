@@ -22,7 +22,14 @@
       </div>
       <div *ngIf="selectedClass" class="card">
         <div class="card-header">
-          Class {{ selectedClass.name }}
+          <span class="float-left">
+            Class {{ selectedClass.name }}
+          </span>
+          <span class="float-right" (click)="onDeselectClass()">
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </span>
         </div>
         <div class="card-body">
           <div *ngIf="!selectedClass.teacherId" class="container mb-2">
@@ -97,7 +104,8 @@
           <div class="row">
             <div class="col-12">
               <div class="list-group">
-                <div *ngFor="let subject of selectedSubjects" class="list-group-item" (click)="onSelectSubject(subject.subjectId)">
+                <div *ngFor="let subject of selectedSubjects" class="list-group-item hoverable clickable"
+                (click)="onSelectSubject(subject.subjectId)">
                   <span class="float-left">{{ subject.name }}</span>
                   <ngx-avatar class="my-avatar float-right"
                     value="{{ subject.teacherId | namify | initialize }}"

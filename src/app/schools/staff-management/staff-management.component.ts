@@ -37,6 +37,7 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(){
+    // Get the SchoolId from URL Params
     this.route.params.subscribe(params => {
       this.selectedSchoolId = params['schoolId'];
     });
@@ -154,6 +155,10 @@ export class StaffManagementComponent implements OnInit, OnDestroy {
 
   onClassTeacherDivModeChange(mode: string){
     this.classTeacherDivMode = mode;
+  }
+
+  onDeselectClass(){
+    this.selectedClass = undefined;
   }
 
   ngOnDestroy(){

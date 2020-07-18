@@ -28,6 +28,7 @@ import { SchoolSidenavComponent } from './schools/school-sidenav/school-sidenav.
 import { ManageSubjectsComponent } from './schools/manage-subjects/manage-subjects.component';
 import { ManageClassesComponent } from './schools/manage-classes/manage-classes.component';
 import { ManageStaffsComponent } from './schools/manage-staffs/manage-staffs.component';
+import { StudentManagementComponent } from './schools/student-management/student-management.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ManageStaffsComponent } from './schools/manage-staffs/manage-staffs.com
     SchoolSidenavComponent,
     ManageSubjectsComponent,
     ManageClassesComponent,
-    ManageStaffsComponent
+    ManageStaffsComponent,
+    StudentManagementComponent
   ],
   imports: [
     BrowserModule,

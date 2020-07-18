@@ -81,8 +81,7 @@ export class ManageClassesComponent implements OnInit, OnDestroy {
     let classId = this.schoolService.addClassToSchool(
       form.value.className,
       this.selectedSchoolId,
-      form.value.teacherId,
-      undefined
+      form.value.teacherId
     );
     this.activatedTabForClassTools = "allClasses";
     this.onSelectClass(classId);

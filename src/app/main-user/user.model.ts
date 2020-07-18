@@ -5,6 +5,7 @@ export class User {
     public designation: string,
     public email: string,
     public role: string,
-    public schoolId: string
+    public schoolId: string,
+    public classId?: string
     ) {}
 }

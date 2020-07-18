@@ -26,6 +26,7 @@ export class SchoolService {
     this.schools.push({schoolId: "s1", name: "NPS", city: "Namchi", admin: null});
     this.schools.push({schoolId: "s2", name: "Velammal", city: "Chennai", admin: null});
     this.classes.push({classId: "c1", name: "One", schoolId: "s1", teacherId: "u5", repId: null});
+    this.classes.push({classId: "c2", name: "Two", schoolId: "s1", teacherId: "u6", repId: null});
     this.subjects.push({subjectId: "sub1", name: "English", classId: "c1", teacherId: "u5", schoolId: "s1", performance: [{userId: "u1", marks: 56}, {userId: "u2", marks: 56} ]});
     this.subjects.push({subjectId: "sub2", name: "Maths", classId: "c1", teacherId: "u6", schoolId: "s1", performance: [{userId: "u1", marks: 56}, {userId: "u2", marks: 56} ]});
   }
@@ -51,7 +52,6 @@ export class SchoolService {
 
   emitNextSubjectsValue(){
     this.subjectsSub.next([...this.subjects]);
-    console.log(this.subjects);
   }
 
   addSchool(schoolName: string, city: string){
@@ -83,11 +83,7 @@ export class SchoolService {
     this.emitNextSubjectsValue();
   }
 
-  addClassToSchool(className: string, schoolId: string, teacherId: string, repId?: string){
-    if(repId){
-      console.log("Rep");
-      return;
-    }
+  addClassToSchool(className: string, schoolId: string, teacherId: string){
     let classId = this.generateClassId();
     this.classes.push
     ({
@@ -110,23 +106,24 @@ export class SchoolService {
       this.subjects = this.subjects.filter((o) => {
         return o.schoolId !== schoolId;
       });
+      this.userService.removeUsersofSchool(schoolId);
     }
     if (template === 'primary'){
       let i;
       for (i=0; i<5; i++){
-        this.addClassToSchool(this.refClasses[i], schoolId, undefined, undefined);
+        this.addClassToSchool(this.refClasses[i], schoolId, undefined);
       }
     }
     if (template === 'secondary'){
       let i;
       for (i=0; i<10; i++){
-        this.addClassToSchool(this.refClasses[i], schoolId, undefined, undefined);
+        this.addClassToSchool(this.refClasses[i], schoolId, undefined);
       }
     }
     if (template === 'higherSecondary'){
       let i;
       for (i=0; i<12; i++){
-        this.addClassToSchool(this.refClasses[i], schoolId, undefined, undefined);
+        this.addClassToSchool(this.refClasses[i], schoolId, undefined);
       }
     }
     this.emitNextSubjectsValue();
@@ -179,7 +176,7 @@ export class SchoolService {
     let lastSchoolIndex = this.schools.length - 1;
     let lastSchool = this.schools[lastSchoolIndex];
     let lastSchoolId = lastSchool.schoolId;
-    let nextSchoolIdNum = Number(lastSchoolId.substr(1,1)) + 1;
+    let nextSchoolIdNum = Number(lastSchoolId.substr(1)) + 1;
     let schoolId = "s" + nextSchoolIdNum;
     return schoolId;
   }
@@ -191,7 +188,7 @@ export class SchoolService {
     let lastclassIndex = this.classes.length - 1;
     let lastclass = this.classes[lastclassIndex];
     let lastclassId = lastclass.classId;
-    let nextclassIdNum = Number(lastclassId.substr(1,1)) + 1;
+    let nextclassIdNum = Number(lastclassId.substr(1)) + 1;
     let classId = "c" + nextclassIdNum;
     return classId;
   }
@@ -203,7 +200,7 @@ export class SchoolService {
     let lastSubIndex = this.subjects.length - 1;
     let lastSub = this.subjects[lastSubIndex];
     let lastSubId = lastSub.subjectId;
-    let nextSubIdNum = Number(lastSubId.substr(3,1)) + 1;
+    let nextSubIdNum = Number(lastSubId.substr(3)) + 1;
     let subId = "sub" + nextSubIdNum;
     return subId;
   }

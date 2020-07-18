@@ -137,3 +137,13 @@ ngx-avatar.navbar-tem{
 .banner-img{
   height: 390px
 }
+
+.hoverable{
+  cursor: pointer;
+  transition: 200ms;
+}
+
+.hoverable:hover{
+  background-color: #30303d;
+  color: #fff;
+}
