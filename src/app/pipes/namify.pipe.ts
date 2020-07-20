@@ -14,7 +14,6 @@ export class NamifyPipe implements PipeTransform{
 
   transform(Id: string){
     this.users = this.userService.initUsers();
-    console.log(this.users);
     this.user = this.users.find(e => e.userId === Id);
     return this.user.name;
   }

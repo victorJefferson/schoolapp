@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header dark-bg">
+          <h4>Student Management</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <!-- Nav(Left) Contents of Page -->
+    <div class="col-lg-3">
+      <app-school-sidenav></app-school-sidenav>
+    </div>
+    <div class="col-lg-5">
+      <div *ngIf="!selectedClass" class="card">
+        <img class="banner-img" src="../../../assets/images/studManage.png">
+      </div>
+      <div *ngIf="selectedClass" class="card">
+        <div class="card-header">
+          <span class="float-left">
+            Class {{ selectedClass.name }}
+          </span>
+          <span class="float-right" (click)="onDeselectClass()">
+            <button type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </span>
+        </div>
+        <div class="card-body">
+          <div *ngIf="selectedClass.teacherId" class="row mb-1">
+            <div class="col-12">
+              <li class="list-group-item sm">
+                <div style="display: flex;">
+                  <div style="margin-right: 15px; margin-top: 1%">
+                    Class Teacher:
+                  </div>
+                  <ngx-avatar class="my-avatar"value="{{ selectedClass.teacherId | namify | initialize }}" size="25"></ngx-avatar>
+                  <div style="margin-left: 10px; margin-top: 1%;">
+                    {{ selectedClass.teacherId | namify }}
+                  </div>
+                </div>
+              </li>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-12">
+              <div class="list-group-item">
+                <form (submit)="onAddStudent(addStudentForm)" #addStudentForm="ngForm">
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Name of Student</mat-label>
+                        <input matInput ngModel name="studentName" #studentName="ngModel" required>
+                        <mat-error *ngIf="studentName.invalid">Please enter a valid name</mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field class="example-full-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput ngModel name="email" #email="ngModel" required email>
+                        <mat-error *ngIf="email.invalid">Please enter a valid email</mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <button class="btn btn-block btn-success">Add Student</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="list-group">
+                <ng-container *ngFor="let thisSchoolStudent of thisSchoolStudents">
+                  <div *ngIf="thisSchoolStudent.classId === selectedClass.classId" class="list-group-item" style="display: flex;">
+                    <ngx-avatar class="my-avatar"value="{{ thisSchoolStudent.userId | namify | initialize }}" size="25"></ngx-avatar>
+                    <div style="margin-left: 10px; margin-top: 1%;">
+                      {{ thisSchoolStudent.userId | namify }}
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <mat-card class="mb-2 dark-bg">
+        <strong>Classes</strong>
+      </mat-card>
+      <div class="list-group">
+        <div *ngFor="let class of classes" class="list-group-item clickable hoverable" (click)="onSelectClass(class)">
+          Class {{ class.name }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

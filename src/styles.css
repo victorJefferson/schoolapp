@@ -9,9 +9,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   box-shadow: none;
 }
 
-ngx-avatar{
+mat-toolbar{
+  background: #30303d!important;
+}
+
+ngx-avatar.navbar-tem{
   border-radius:50%;
   box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+}
+
+.right-shadow{
+  box-shadow: 5px 0 5px -5px #333;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.btn-dark{
+  box-shadow: 0 8px 6px -6px black;
+}
+
+.dark-bg{
+  background: #30303d;
+  color: #fff;
 }
 
 .example-form {
@@ -35,5 +56,94 @@ ngx-avatar{
 }
 
 .btn-nav{
-  margin-right: 5px;
+  margin-right: 10px;
+}
+
+.dropdown-item{
+  font-size: 13px;
+  height: 40px;
+}
+
+.simulate-link{
+  color: blue;
+  cursor: pointer!important;
+  transition: 200ms;
+}
+
+.list-group-item.active{
+  background-color: #30303d!important;
+  border: none!important;
+}
+
+.list-group-item.sm{
+  font-size: 14px;
+}
+
+.simulate-link:hover{
+  color: black;
+}
+
+.nav-link{
+  transition: 200ms;
+  font-size: 12px;
+}
+
+.nav-link.active{
+  box-shadow: 0 -5px 5px -5px #333;
+  cursor: pointer;
+}
+
+.nav-link:hover{
+  box-shadow: 0 -5px 5px -5px #333;
+  cursor: pointer;
+  border-bottom: 1px solid #FFFFFF!important;
+}
+
+.small-font{
+  font-size: 12px;
+}
+
+.no-margin{
+  margin: 0;
+}
+
+.centered{
+  margin: auto!important;
+}
+
+.alert-danger{
+  background-color: transparent!important;
+  border: none;
+  margin: 0;
+}
+
+.material-icons{
+  font-size: 20px;
+}
+
+.btn-smallest{
+  height: 30px;
+  width:  40px;
+  padding: 0;
+  padding-top: 2%;
+}
+
+.book-text{
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+}
+
+.banner-img{
+  height: 390px
+}
+
+.hoverable{
+  cursor: pointer;
+  transition: 200ms;
+}
+
+.hoverable:hover{
+  background-color: #30303d;
+  color: #fff;
 }

@@ -1,19 +1,34 @@
 <div class="container">
   <div class="row">
-    <div [ngClass]="(viewSchoolMode || editSchoolMode)?'col-6':'col-12'">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>My Schools</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-3">
+      <app-sidenav></app-sidenav>
+    </div>
+    <div [ngClass]="(viewSchoolMode || editSchoolMode)?'col-5':'col-9'">
       <div class="list-group">
-        <div class="list-group-item clickable" *ngFor="let school of schools" >
-          <div class="float-left">{{ school.name }}</div>
+        <div class="list-group-item" *ngFor="let school of schools" >
+          <div class="float-left">
+            <p class="simulate-link" (click)="selectSchool(school.schoolId)">{{ school.name }}</p>
+          </div>
           <div class="float-right">
             <div class="btn-group" role="group" aria-label="Basic example">
-              <button (click)="onSelectSchool(school.schoolId)" type="button" class="btn btn-sm btn-primary">View</button>
+              <button (click)="onSelectSchool(school.schoolId)" type="button" class="btn btn-sm btn-primary">Details</button>
               <button (click)="onEditSchool(school.schoolId)"type="button" class="btn btn-sm btn-warning">Edit</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-6" *ngIf="viewSchoolMode">
+    <div class="col-4" *ngIf="viewSchoolMode">
       <div class="card">
         <div class="card-header">
           <span class="float-left">{{ selecetedSchool.name }}</span>
@@ -26,12 +41,16 @@
         <div class="card-body">
           <p>Location: {{ selecetedSchool.city }}</p>
           <hr>
-          <p *ngIf="!selecetedSchool.admin">This School isn't assigned an Admin.</p>
+          <div>
+            <p class="float-left" *ngIf="!selecetedSchool.admin">This School isn't assigned an Admin.</p>
+            <button class="btn btn-primary btn-sm float-right" (click)="onEditSchool(selecetedSchool.schoolId)"
+            *ngIf="!selecetedSchool.admin">Assign Admin</button>
+          </div>
           <p *ngIf="selecetedSchool.admin">Administered by: {{ selecetedSchool.admin | namify }}</p>
         </div>
       </div>
     </div>
-    <div class="col-6" *ngIf="editSchoolMode">
+    <div class="col-4" *ngIf="editSchoolMode">
       <div class="card">
         <div class="card-header">
           <span class="float-left">{{ selecetedSchool.name }} - Edit Mode</span>

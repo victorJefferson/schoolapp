@@ -1,5 +1,12 @@
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let user of users">
-    {{ user.name }} - {{ user.name | initialize }}
-  </li>
-</ul>
+<div class="card">
+  <div class="card-header">
+    <h5>All Users</h5>
+  </div>
+  <div class="card-body">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let user of users">
+        {{ user.name }} - {{ user.name | initialize }}
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<mat-expansion-panel class="mb-1">
+  <mat-expansion-panel-header>
+    Add Subjects
+  </mat-expansion-panel-header>
+  <ng-template matExpansionPanelContent>
+    <form class="example-form" (submit)="onAddSubject(addSubjectForm)" #addSubjectForm="ngForm">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Subject Name</mat-label>
+            <input matInput ngModel name="subName" #subName="ngModel" required>
+            <mat-error *ngIf="subName.invalid">
+              Please enter a valid Subject name
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width">
+            <mat-label>Teacher Assigned</mat-label>
+            <select matNativeControl ngModel name="teacherId" #teacherId="ngModel" required>
+              <option *ngFor="let thisSchoolStaff of thisSchoolStaffs"
+                value="{{thisSchoolStaff.userId}}">{{thisSchoolStaff.name}}
+              </option>
+            </select>
+            <mat-error *ngIf="teacherId.invalid">
+              Please select a valid Teacher
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <label for="classId">Class Assigned</label>
+          <select ngModel name="classId" class="form-control" #classId="ngModel" required>
+            <option *ngFor="let class of classes"
+              value="{{class.classId}}">Class {{class.name}}
+            </option>
+          </select>
+          <div *ngIf="classId.invalid && classId.touched" class="alert alert-danger">
+            Select a valid Class
+          </div>
+        </div>
+      </div>
+      <hr>
+      <button type="submit" class="btn btn-block btn-success">Add Class</button>
+    </form>
+  </ng-template>
+</mat-expansion-panel>
